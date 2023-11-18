@@ -1,3 +1,7 @@
+"""
+
+"""
+
 class Rikishi:
     def __init__(self, shikona, origin, beya, birthDate, height, weight, rank):
         self.shikona = shikona

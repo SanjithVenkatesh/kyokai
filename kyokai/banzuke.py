@@ -1,8 +1,8 @@
-import re, constants
-from fetch import fetchBanzuke
+import re, utils.constants as constants
+from utils.fetch import fetchBanzuke
 from typing import List
 from multipledispatch import dispatch
-from rikishi import Rikishi
+from kyokai.rikishi import Rikishi
 
 class Banzuke:
     def __init__(self, year, month):

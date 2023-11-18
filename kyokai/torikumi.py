@@ -1,7 +1,7 @@
-from fetch import fetchTorikumi
+from utils.fetch import fetchTorikumi
 from typing import Dict
 from collections import Counter, defaultdict
-import constants
+import utils.constants as constants
 
 """
 A torikumi in itself is just a sumo bout, but for our purposes it refers to a day's bout schedule and results

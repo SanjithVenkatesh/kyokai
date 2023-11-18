@@ -1,6 +1,6 @@
-from banzuke import Banzuke
-from torikumi import Torikumi
-import constants
+from kyokai.banzuke import Banzuke
+from kyokai.torikumi import Torikumi
+import utils.constants as constants
 
 def main():
     year = 2023

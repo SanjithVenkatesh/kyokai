@@ -1,8 +1,8 @@
 """
 Functions to perform REST calls
 """
-import requests, constants
-from exceptions import FetchURLError, NoBanzukeFoundError, NoTorikumiFoundError, NeedDayForTorikumiFetchError
+import requests, utils.constants as constants
+from utils.exceptions import FetchURLError, NoBanzukeFoundError, NoTorikumiFoundError, NeedDayForTorikumiFetchError
 
 
 texts = {"banzuke": "Banzuke", "torikumi": "Results"}
