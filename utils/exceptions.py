@@ -29,3 +29,11 @@ class NeedDayForTorikumiFetchError(Exception):
         self.year, self.month, self.day = year, month, day
         self.message = f"{message}\nYear = {self.year} Month: {self.month} Day: {self.day}"
         super().__init__(self.message)
+
+class RikishiNotFoundError(Exception):
+    BASE_MESSAGE = "Rikishi could not be found!"
+
+    def __init__(self, shikona, year, month, message=BASE_MESSAGE):
+        self.shikona, self.year, self.month, self.day = shikona, year, month
+        self.message = f"{message}\nShikona: {self.shikona} Year = {self.year} Month: {self.month}"
+        super().__init__(self.message)

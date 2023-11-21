@@ -1,17 +1,21 @@
 from kyokai.banzuke import Banzuke
 from kyokai.torikumi import Torikumi
+from kyokai.rikishi import Rikishi
 import utils.constants as constants
 
 def main():
     year = 2023
     month = 5
     day = 1
+    shikona = "takakeisho"
+
+    r = Rikishi(shikona, year=year, month=month)
     # b = Banzuke(year, month)
-    t = Torikumi(year, month, day)
+    # t = Torikumi(year, month, day)
     #print(t.matches)
-    for division, bouts in t.matches.items():
-        for bout in bouts:
-            print(division, bout.getWinner())
+    # for division, bouts in t.matches.items():
+    #     for bout in bouts:
+    #         print(division, bout.getWinner())
     # print(constants.KIMARITES)
 
     # # print(b.getDivisionRikishi("Makuuchi"))

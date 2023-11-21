@@ -1,5 +1,7 @@
 DIVISIONS = ["Makuuchi", "Juryo", "Makushita", "Sandanme", "Jonidan", "Jonokuchi"]
 
+MAKUUCHI_RANKS = ["Maegashira", "Komosubi", "Sekiwake", "Ozeki", "Yokozuna"]
+
 BASE_URL = "https://sumodb.sumogames.de"
 
 KIMARITES = list(map(lambda x: x.lower(), ["Abisetaoshi", "Oshidashi", "Oshitaoshi", "Tsukidashi", "Tsukitaoshi", "Yorikiri", "Yoritaoshi", 
