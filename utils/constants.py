@@ -1,6 +1,6 @@
 DIVISIONS = ["Makuuchi", "Juryo", "Makushita", "Sandanme", "Jonidan", "Jonokuchi"]
 
-MAKUUCHI_RANKS = ["Maegashira", "Komosubi", "Sekiwake", "Ozeki", "Yokozuna"]
+MAKUUCHI_RANKS = ["Maegashira", "Komusubi", "Sekiwake", "Ozeki", "Yokozuna"]
 
 BASE_URL = "https://sumodb.sumogames.de"
 

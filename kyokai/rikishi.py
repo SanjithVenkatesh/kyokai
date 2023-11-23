@@ -1,13 +1,17 @@
 """
 A rikishi represents an individual wrestler that is part of a beya and therefore the association as a whole
 """
+import copy
+from typing import Dict
 from utils.fetch import fetchRikishi
 from utils.exceptions import RikishiNotFoundError
 import utils.constants as constants
+import re
 
 TAGS = ['\t', '\r', '<tr>', "</tr>", "<td>", "</td>", "<table>", "</table>"]
 
-ATTRIBUTES = ["higestRank", "realName", "birthDate", "shusshin", "heya", ""]
+SPECIAL_PRIZES = {"shukun-sho": 0, "kanto-sho": 0, "gino-sho": 0, "kinboshi": 0}
+DIVISION_INFO = {"wins": 0, "loses": 0, "absences": 0, "yusho": 0, "jun-yusho": 0}
 
 class Rikishi:
     """
@@ -59,11 +63,66 @@ class Rikishi:
         # Compile divisional records into a dictionary of dictionaries
         rikishiRecords = {}
         for division in constants.DIVISIONS:
-            rikishiRecords[division] = rikishiInfo[f"In {division}"]
-
-
+            try:
+                rikishiRecords[division] = self._parseRecord(division, rikishiInfo[f"In {division}"])
+                del rikishiInfo[f"In {division}"]
+            except:
+                rikishiRecords[division] = None
+                
+        
+        # Get record for ranks within Makuuchi
+        withinMakuuchi = {}
+        for rank in constants.MAKUUCHI_RANKS:
+            try:
+                withinMakuuchi[rank] = self._parseRecord(division, rikishiInfo[f"As {rank}"])
+                del rikishiInfo[f"As {rank}"]
+            except:
+                withinMakuuchi[rank] = None
+                
+            
+        rikishiRecords['Makuuchi']['withinMakuuchi'] = withinMakuuchi
+        rikishiInfo["Records"] = rikishiRecords
         
 
-        return rikishiRecords
+        return rikishiInfo
+    
+    def _parseRecord(self, division: str, recordString: str) -> Dict[str, int]:
+        """
+        Given a string like the following:
+        '77-54-4/130 (9 basho), 1 Jun-Yusho, 2 Shukun-Sho, 1 Kanto-Sho, 3 Kinboshi'
+        We should parse this into the following dictionary:
+        {'wins': 77, 'loses': 54, 'absences': 4, 'yusho': 0, 'jun-yusho': 1, 
+        'special': {'shukun-sho': 2, 'kanto-sho': 1, 'kinboshi': 3, 'gino-sho': 0}}
+        """
+        stats = {}
+
+        divisionInfoSplit = recordString.split(",")
+        stats = copy.deepcopy(DIVISION_INFO)
+        if division == "Makuuchi":
+            stats["special"] = copy.deepcopy(SPECIAL_PRIZES)
+        
+        # First get the overall wins, loses, and absences for the division, it will be the first item of the split
+        wlaPattern = r'\b(\d+)\b'
+        wlaList = [int(n) for n in re.findall(wlaPattern, divisionInfoSplit[0])]
+        stats["wins"] = wlaList[0]
+        stats['loses'] = wlaList[1]
+        stats['absences'] = wlaList[2] if len(wlaList) > 4 else 0
+
+        # Now we will get the special awards
+        # Start with yushos and jun-yushos since that is relevant for all divisions
+        for specialAward in divisionInfoSplit[1:]:
+            specialAward = specialAward.strip().lower()
+            yushos = ['yusho', 'jun-yusho']
+            for y in yushos:
+                if y in specialAward:
+                    stats[y] = int(specialAward.split()[0])
+        
+        # Now look at the rest of the special awards if the division is Makuuchi as those awards are only relevant to that division
+            if division == 'Makuuchi':
+                for saToLookFor in list(SPECIAL_PRIZES.keys()):
+                    if saToLookFor in specialAward:
+                        stats['special'][saToLookFor] = int(specialAward.split()[0])
+        
+        return stats
     
     
