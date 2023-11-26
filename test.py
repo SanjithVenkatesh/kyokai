@@ -5,10 +5,10 @@ import utils.constants as constants
 from utils.birthDate import birthDate
 
 def main():
-    year = 2018
+    year = 2023
     month = 5
     day = 1
-    shikona = "Aoiyama"
+    shikona = "Atamifuji"
     birthStr = 'March 2, 1999 (24 years)'
 
     # bd = birthDate(birthStr)
