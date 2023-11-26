@@ -4,6 +4,9 @@ from collections import Counter, defaultdict
 import utils.constants as constants
 
 """
+This module provides logic for creating a Torikumi object which is a representation of a tournament's day schedule and results
+Ex: https://sumodb.sumogames.de/Results.aspx
+
 A torikumi in itself is just a sumo bout, but for our purposes it refers to a day's bout schedule and results
 """
 

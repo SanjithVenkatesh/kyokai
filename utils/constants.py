@@ -4,6 +4,18 @@ MAKUUCHI_RANKS = ["Maegashira", "Komusubi", "Sekiwake", "Ozeki", "Yokozuna"]
 
 BASE_URL = "https://sumodb.sumogames.de"
 
+JAPAN, MONGOLIA, GEORGIA, BULGARIA, CHINA = "Japan", "Mongolia", "Georgia", "Bulgaria", "China"
+
+JAPAN_PREFECTURES = [
+    'Hokkaido', 'Aomori', 'Iwate', 'Miyagi', 'Akita', 'Yamagata', 'Fukushima',
+    'Ibaraki', 'Tochigi', 'Gunma', 'Saitama', 'Chiba', 'Tokyo', 'Kanagawa',
+    'Niigata', 'Toyama', 'Ishikawa', 'Fukui', 'Yamanashi', 'Nagano', 'Gifu',
+    'Shizuoka', 'Aichi', 'Mie', 'Shiga', 'Kyoto', 'Osaka', 'Hyogo', 'Nara',
+    'Wakayama', 'Tottori', 'Shimane', 'Okayama', 'Hiroshima', 'Yamaguchi',
+    'Tokushima', 'Kagawa', 'Ehime', 'Kochi', 'Fukuoka', 'Saga', 'Nagasaki',
+    'Kumamoto', 'Oita', 'Miyazaki', 'Kagoshima', 'Okinawa'
+]
+
 KIMARITES = list(
     map(
         lambda x: x.lower(),

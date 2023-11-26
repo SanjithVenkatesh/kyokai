@@ -42,7 +42,7 @@ class RikishiNotFoundError(Exception):
     BASE_MESSAGE = "Rikishi could not be found!"
 
     def __init__(self, shikona, year, month, message=BASE_MESSAGE):
-        self.shikona, self.year, self.month, self.day = shikona, year, month
+        self.shikona, self.year, self.month = shikona, year, month
         self.message = (
             f"{message}\nShikona: {self.shikona} Year = {self.year} Month: {self.month}"
         )

@@ -8,12 +8,12 @@ from typing import Dict
 from utils.fetch import fetchRikishi
 from utils.exceptions import RikishiNotFoundError
 import utils.constants as constants
+from utils.birthDate import birthDate
 
 TAGS = ["\t", "\r", "<tr>", "</tr>", "<td>", "</td>", "<table>", "</table>"]
 
 SPECIAL_PRIZES = {"shukun-sho": 0, "kanto-sho": 0, "gino-sho": 0, "kinboshi": 0}
 DIVISION_INFO = {"wins": 0, "loses": 0, "absences": 0, "yusho": 0, "jun-yusho": 0}
-
 
 class Rikishi:
     """
@@ -31,6 +31,8 @@ class Rikishi:
             year, month = kwargs["year"], kwargs["month"]
             rikishiInfo = self._retrieveRikishi(shikona, year, month)
             print(rikishiInfo)
+            for k, v in rikishiInfo.items():
+                setattr
 
     def getShikona(self):
         return self.shikona
@@ -57,6 +59,18 @@ class Rikishi:
             )
             if len(attributes) == 2:
                 rikishiInfo[attributes[0]] = attributes[1]
+        
+        # Re-format the highest rank, real name, shusshin, hatsu dohyo
+        rikishiInfo['highestRank'] = rikishiInfo['Highest Rank']
+        del rikishiInfo['Highest Rank']
+        rikishiInfo['realName'] = rikishiInfo['Real Name'].lower().capitalize()
+        del rikishiInfo['Real Name']
+        # TODO: create a util object to represent the shusshin
+        rikishiInfo['shusshin'] = rikishiInfo['Shusshin']
+        # TODO: modify the birthDate class to be a general Date class
+        rikishiInfo['hatsuDohyo'] = rikishiInfo['Hatsu Dohyo']
+        del rikishiInfo['Hatsu Dohyo']
+        del rikishiInfo['Shusshin']
 
         # Clean the dictionary into necessary attributes
         # Height and Weight
@@ -65,10 +79,12 @@ class Rikishi:
         del rikishiInfo["Height and Weight"]
 
         # Split beyas into a list
-        rikishiInfo["Heya"] = rikishiInfo["Heya"].split(" - ")
+        rikishiInfo["heya"] = rikishiInfo["Heya"].split(" - ")
+        del rikishiInfo["Heya"]
 
         # Split shikonas into a list
-        rikishiInfo["Shikona"] = rikishiInfo["Shikona"].split(" - ")
+        rikishiInfo["shikona"] = rikishiInfo["Shikona"].split(" - ")
+        del rikishiInfo["Shikona"]
 
         # Compile divisional records into a dictionary of dictionaries
         rikishiRecords = {}
@@ -93,7 +109,32 @@ class Rikishi:
                 withinMakuuchi[rank] = None
 
         rikishiRecords["Makuuchi"]["withinMakuuchi"] = withinMakuuchi
-        rikishiInfo["Records"] = rikishiRecords
+        rikishiInfo["records"] = rikishiRecords
+
+        # Handle total career record
+        careerPattern = r'(\d+)'
+        careerNumbers = re.findall(careerPattern, rikishiInfo['Career Record'])
+        careerNumbers = [int(number) for number in careerNumbers]
+        careerRecord = {"wins": careerNumbers[0], "loses": careerNumbers[1], "totalBouts": careerNumbers[2], "bashos": careerNumbers[3]}
+        rikishiInfo["records"]["total"] = careerRecord
+        del rikishiInfo['Career Record']
+
+        # Handle Mae-zumo and Banzuke-gai stats
+        getDigit = r'(\d+)'
+        rikishiInfo['maezumo'] = int(re.search(getDigit, rikishiInfo['In Mae-zumo']).group(1))
+        rikishiInfo['banzukegai'] = int(re.search(getDigit, rikishiInfo['In Banzuke-gai']).group(1)) if 'In Banzuke-gai' in rikishiInfo else 0
+        del rikishiInfo['In Mae-zumo']
+        if 'In Banzuke-gai' in rikishiInfo:
+            del rikishiInfo['In Banzuke-gai']
+
+        rikishiInfo['birthDate'] = birthDate(rikishiInfo['Birth Date'])
+        del rikishiInfo['Birth Date']
+
+        self.retired = False
+        # Handle retired Rikishi
+        if "Intai" in rikishiInfo:
+            rikishiInfo['intai'] = rikishiInfo['Intai']
+            self.retired = True
 
         return rikishiInfo
 
