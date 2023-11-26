@@ -2,7 +2,7 @@ from kyokai.banzuke import Banzuke
 from kyokai.torikumi import Torikumi
 from kyokai.rikishi import Rikishi
 import utils.constants as constants
-from utils.birthDate import birthDate
+from utils.birthDate import BirthDate
 
 def main():
     year = 2023
@@ -13,7 +13,8 @@ def main():
 
     # bd = birthDate(birthStr)
     # print(bd.getAge())
-    r = Rikishi(shikona, year=year, month=month)
+    r = Rikishi(shikona, year=2023, month=5)
+    print(r.records)
     # b = Banzuke(year, month)
     # t = Torikumi(year, month, day)
     #print(t.matches)
