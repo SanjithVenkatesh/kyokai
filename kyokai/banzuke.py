@@ -1,5 +1,6 @@
-import re, utils.constants as constants
-from utils.fetch import fetchBanzuke
+import re
+from kyokai.utils.constants import *
+from kyokai.utils.fetch import fetchBanzuke
 from typing import List
 from multipledispatch import dispatch
 from kyokai.rikishi import Rikishi

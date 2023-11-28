@@ -1,4 +1,5 @@
 requests
 collections
 typing
+nose
 multipledispatch

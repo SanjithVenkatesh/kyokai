@@ -5,10 +5,10 @@ A Rikishi is an individual wrestler that is a part of a Beya (stable) and ultima
 """
 import copy, re
 from typing import Dict
-from utils.fetch import fetchRikishi
-from utils.exceptions import RikishiNotFoundError
-import utils.constants as constants
-from utils.birthDate import Debut, BirthDate
+from kyokai.utils.fetch import fetchRikishi
+from kyokai.utils.exceptions import RikishiNotFoundError
+import kyokai.utils.constants as constants
+from kyokai.utils.date import Debut, BirthDate
 
 TAGS = ["\t", "\r", "<tr>", "</tr>", "<td>", "</td>", "<table>", "</table>"]
 
@@ -24,18 +24,44 @@ class Rikishi:
     Ex: Takakeisho = https://sumodb.sumogames.de/Rikishi.aspx?shikona=takakeisho&b=202301
     """
 
-    def __init__(self, shikona, **kwargs):
+    def __init__(self, shikona, *args, **kwargs):
         self.shikona = shikona
 
         if "year" and "month" in kwargs:
             year, month = kwargs["year"], kwargs["month"]
             self._retrieveRikishi(shikona, year, month)
-        elif len(kwargs) == 0:
-            pass
-            
+        elif len(args) == 2:
+            if type(args[0]) is not int or type(args[1]) is not int:
+                raise Exception("Invalid argument types to create Rikishi!")
+            self._retrieveRikishi(shikona, args[0], args[1])
 
-    def getShikona(self):
-        return self.shikona
+    def getCurrentShikona(self):
+        if type(self.shikona) == list:
+            return self.shikona[-1]
+        else:
+            return self.shikona
+    
+    def getCurrentHeya(self):
+        if type(self.heya) == list:
+            return self.heya[-1]
+        else:
+            return self.heya
+    
+    def getDebut(self):
+        return self.debut
+    
+    def getCareerWins(self):
+        return self.records["total"]["wins"]
+
+    def getCareerLoses(self):
+        return self.records["total"]["loses"]
+    
+    # Division here has to be a division name, not a number
+    def getDivisionWins(self, division: str):
+        return self.records[division.lower().capitalize()]['wins']
+    
+    def getDivisionLoses(self, division: str):
+        return self.records[division.lower().capitalize()]['loses']
 
     def _retrieveRikishi(self, shikona: str, year: int, month: int):
         rikishi = fetchRikishi(shikona, year, month)
@@ -65,7 +91,7 @@ class Rikishi:
         self.realName = rikishiInfo['Real Name'].lower().capitalize()
         # TODO: create a util object to represent the shusshin
         self.shusshin = rikishiInfo['Shusshin']
-        # TODO: modify the birthDate class to be a general Date class
+        
         self.debut = Debut(rikishiInfo['Hatsu Dohyo'])
 
         # Clean the dictionary into necessary attributes

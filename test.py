@@ -1,8 +1,8 @@
 from kyokai.banzuke import Banzuke
 from kyokai.torikumi import Torikumi
 from kyokai.rikishi import Rikishi
-import utils.constants as constants
-from utils.birthDate import BirthDate
+import kyokai.utils.constants as constants
+from kyokai.utils.date import BirthDate
 
 def main():
     year = 2023
