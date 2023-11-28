@@ -47,3 +47,33 @@ class RikishiNotFoundError(Exception):
             f"{message}\nShikona: {self.shikona} Year = {self.year} Month: {self.month}"
         )
         super().__init__(self.message)
+
+class InvalidMonthError(Exception):
+    BASE_MESSAGE = "Month is not valid!"
+
+    def __init__(self, month, message=BASE_MESSAGE):
+        self.month =month
+        self.message = (
+            f"{message}\tMonth: {self.month}"
+        )
+        super().__init__(self.message)
+
+class LeapYearDayInvalidError(Exception):
+    BASE_MESSAGE = "Leap year day is invalid!"
+
+    def __init__(self, year, day, message=BASE_MESSAGE):
+        self.year, self.day = year, day
+        self.message = (
+            f"{message}\Year: {self.year}, Day: {self.day}"
+        )
+        super().__init__(self.message)
+
+class InvalidDayForMonthError(Exception):
+    BASE_MESSAGE = "Day isn't valid with Month!"
+
+    def __init__(self, month, day, message=BASE_MESSAGE):
+        self.month, self.day = month, day
+        self.message = (
+            f"{message}\Month: {self.month}, Day: {self.day}"
+        )
+        super().__init__(self.message)

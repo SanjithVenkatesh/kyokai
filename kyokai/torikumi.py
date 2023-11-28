@@ -1,7 +1,7 @@
-from utils.fetch import fetchTorikumi
+from kyokai.utils.fetch import fetchTorikumi
 from typing import Dict
 from collections import Counter, defaultdict
-import utils.constants as constants
+import kyokai.utils.constants as constants
 
 """
 This module provides logic for creating a Torikumi object which is a representation of a tournament's day schedule and results

@@ -1,8 +1,9 @@
 """
 Functions to perform REST calls
 """
-import requests, utils.constants as constants
-from utils.exceptions import (
+import requests
+import kyokai.utils.constants as constants
+from kyokai.utils.exceptions import (
     FetchURLError,
     NoBanzukeFoundError,
     NoTorikumiFoundError,
@@ -32,8 +33,6 @@ def _fetchInfo(type: str, year: int, month: int, **kwargs):
         shikonaStr = kwargs["shikona"]
         url += f"&shikona={shikonaStr}"
 
-    print("URL: ", url)
-
     rText = _fetchData(url)
 
     if "<pre>" not in rText and type != "rikishi":
@@ -49,7 +48,7 @@ def fetchBanzuke(year, month):
     return _fetchInfo("banzuke", year, month)
 
 
-def fetchTorikumi(year, month, day):
+def fetchTorikumi(year, month, day=None):
     return _fetchInfo("torikumi", year, month, day=day)
 
 
